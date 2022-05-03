@@ -27,12 +27,9 @@ const { MessageEmbed } = require('discord.js');
 
 /* Agenda */
 
-var agenda = "AGENDA\n"
-var c1 = ""
-var c2 = ""
-var c3 = ""
-var diary = agenda + c1 + c2 + c3
-
+var comp1 = ""
+var comp2 = ""
+var comp3 = ""
 
 
 /* Prefixo do bot */
@@ -64,6 +61,7 @@ client.on("messageCreate", msg => {
       .addFields(
         { name: prefix + 'agenda', value: 'Exibe o que há na Agenda' },
         { name: prefix + 'agendar', value: 'Marca algo na Agenda' },
+        { name: prefix + 'resetagenda', value: 'Reseta a Agenda' },
         { name: prefix + 'play', value: 'Toca uma música' },
         { name: prefix + 'stop', value: 'Para a música' },
         { name: prefix + 'skip', value: 'Pula a música' },
@@ -80,37 +78,36 @@ client.on("messageCreate", msg => {
   }
   else if (msg.content.startsWith(prefix + "agendar")) {
 
-//    msg.channel.send("Digite o que você quer agendar")
-
-    if (c1 == "") {
-
-      if (msg.content != null) {
-        
-        c1 = msg.content + "\n"
-        
-      }
-      
+    if (comp1 == "") {
+      comp1 = msg.content.slice(10).split()
     }
-    else if (c2 == "") {
-      
-      c2 = msg.content + "\n"
-      
+    else if (comp2 == "") {
+      comp2 = msg.content.slice(10).split()
     }
-    else if (c3 == "") {
-      
-      c3 = msg.content + "\n"
-      
+    else if (comp3 == "") {
+      comp3 = msg.content.slice(10).split()
     }
     else {
-
       msg.channel.send("Agenda cheia!")
-      
     }
 
   }
-  else if (msg.content ===  prefix + "ler agenda") {
-    msg.channel.send(diary)
+  else if (msg.content ===  prefix + "agenda") {
+
+    if (comp1 == "" && comp2 == "" && comp3 == "") {
+      msg.channel.send("Agenda vazia!")
+    }
+    else {
+      var agenda = "AGENDA\n" + comp1 +"\n"+ comp2 +"\n"+ comp3
+    
+    msg.channel.send(agenda)
+    }
   }
+    else if (msg.content === prefix + "resetagenda") {
+      comp1 = ""
+      comp2 = ""
+      comp3 = ""
+    }
   else if (msg.content ===  prefix + "play") {
     msg.channel.send("play")
   }
